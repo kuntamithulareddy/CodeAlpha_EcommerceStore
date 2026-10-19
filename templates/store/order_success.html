@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Order Placed{% endblock %}
+{% block content %}
+<div class="panel empty">
+  <div class="emoji">✅</div><span class="pill">ORDER CONFIRMED</span>
+  <h1>Your order is placed!</h1>
+  <p class="muted">Thank you, {{ order.full_name }}. Your demo order number is <strong>#{{ order.id }}</strong>.</p>
+  <h2>₹{{ order.total }}</h2>
+  <p class="muted">This is a demonstration checkout; no real payment was taken.</p>
+  <a class="btn" href="{% url 'my_orders' %}">View my orders</a>
+  <a class="btn secondary" href="{% url 'home' %}">Continue shopping</a>
+</div>
+{% endblock %}

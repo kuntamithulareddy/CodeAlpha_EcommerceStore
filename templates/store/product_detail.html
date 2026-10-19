@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<div style="margin-bottom:22px"><a class="muted" href="{% url 'home' %}">← Back to products</a></div>
+<section class="detail panel">
+  <div>
+    {% if product.image_url %}<img src="{{ product.image_url }}" alt="{{ product.name }}">{% else %}<div class="product-img"></div>{% endif %}
+  </div>
+  <div>
+    <span class="pill">{% if product.stock %}{{ product.stock }} available{% else %}Out of stock{% endif %}</span>
+    <h1 style="font-size:clamp(28px,4vw,42px);margin:17px 0 10px">{{ product.name }}</h1>
+    <div class="price" style="font-size:30px">₹{{ product.price }}</div>
+    <p class="muted" style="line-height:1.8;margin:20px 0">{{ product.description }}</p>
+    <form method="post" action="{% url 'cart_add' product.id %}">{% csrf_token %}<input type="hidden" name="next" value="cart"><button class="btn" type="submit" {% if not product.stock %}disabled{% endif %}>Add to cart</button></form>
+    <p class="muted" style="font-size:12px;margin-top:18px">Secure demo checkout · No real payment is collected.</p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<div class="section-head" style="margin-top:0"><div><span class="pill">YOUR BAG</span><h2>Shopping cart</h2></div></div>
+{% if items %}
+<div class="panel">
+  <div class="table-wrap"><table>
+    <thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+    <tbody>
+    {% for item in items %}
+    <tr>
+      <td><div class="cart-product">{% if item.product.image_url %}<img src="{{ item.product.image_url }}" alt="">{% endif %}<strong>{{ item.product.name }}</strong></div></td>
+      <td>₹{{ item.product.price }}</td>
+      <td><form class="inline-form" method="post" action="{% url 'cart_update' item.product.id %}">{% csrf_token %}<input type="number" name="quantity" min="0" max="{{ item.product.stock }}" value="{{ item.quantity }}" aria-label="Quantity"><button class="btn secondary" type="submit">Update</button></form></td>
+      <td><strong>₹{{ item.line_total }}</strong></td>
+      <td><form method="post" action="{% url 'cart_remove' item.product.id %}">{% csrf_token %}<button class="btn danger" type="submit">Remove</button></form></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  <div style="display:flex;justify-content:flex-end;margin-top:24px"><div style="min-width:240px"><div class="muted">Order total</div><div class="price" style="font-size:30px;margin:7px 0 18px">₹{{ total }}</div><a class="btn" style="width:100%" href="{% url 'checkout' %}">Continue to checkout →</a></div></div>
+</div>
+{% else %}
+<div class="panel empty"><div class="emoji">🛒</div><h2>Your cart is empty</h2><p class="muted">Your next favourite thing is waiting.</p><a class="btn" href="{% url 'home' %}">Browse products</a></div>
+{% endif %}
+{% endblock %}

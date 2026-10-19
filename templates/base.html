@@ -1,0 +1,110 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ShopEase{% endblock %} | CodeAlpha Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#17211c; --muted:#66736b; --green:#16794b; --green-dark:#105c39; --mint:#eaf6ef; --paper:#f7f9f7; --line:#e2e9e3; --white:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"DM Sans",sans-serif; background:var(--paper); color:var(--ink); }
+    a { color:inherit; text-decoration:none; }
+    .nav { background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10; }
+    .nav-inner { max-width:1160px; margin:auto; padding:15px 22px; display:flex; align-items:center; gap:22px; }
+    .brand { font:800 23px Manrope,sans-serif; color:var(--green); margin-right:auto; letter-spacing:-.8px; }
+    .nav-links { display:flex; align-items:center; gap:18px; color:#445148; font-size:14px; }
+    .nav-links a:hover { color:var(--green); }
+    .nav-form { display:inline; margin:0; }
+    .nav-form button { border:0; background:none; font:inherit; color:inherit; cursor:pointer; padding:0; }
+    .container { max-width:1160px; margin:auto; padding:30px 22px 56px; min-height:75vh; }
+    .hero { padding:44px; border-radius:24px; color:white; background:radial-gradient(circle at 85% 20%,#51b879 0,transparent 30%),linear-gradient(120deg,#123d2b,#16794b 70%,#23945d); display:grid; grid-template-columns:1.4fr .6fr; gap:25px; align-items:center; overflow:hidden; }
+    .eyebrow { text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:700; opacity:.85; }
+    h1,h2,h3 { font-family:Manrope,sans-serif; letter-spacing:-.7px; }
+    .hero h1 { font-size:clamp(32px,5vw,52px); line-height:1.08; margin:14px 0; max-width:620px; }
+    .hero p { color:#e2f4e8; line-height:1.7; max-width:540px; }
+    .hero-art { font-size:100px; text-align:center; filter:drop-shadow(0 15px 20px #092c1c66); }
+    .btn { display:inline-flex; justify-content:center; align-items:center; gap:8px; background:var(--green); color:white; padding:11px 16px; border:0; border-radius:10px; font:700 14px "DM Sans",sans-serif; cursor:pointer; transition:.2s; }
+    .btn:hover { background:var(--green-dark); transform:translateY(-1px); }
+    .btn.light { background:#fff; color:var(--green-dark); }
+    .btn.secondary { background:var(--mint); color:var(--green-dark); }
+    .btn.danger { background:#fff0ef; color:#b42318; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:15px; margin:36px 0 18px; }
+    .section-head h2 { margin:0; font-size:27px; }
+    .muted { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+    .product-card { background:#fff; border:1px solid var(--line); border-radius:17px; overflow:hidden; transition:.2s; }
+    .product-card:hover { transform:translateY(-4px); box-shadow:0 14px 28px #173c2410; }
+    .product-img { width:100%; height:220px; object-fit:cover; background:#e9efe9; display:block; }
+    .product-body { padding:18px; }
+    .product-body h3 { font-size:18px; margin:0 0 8px; }
+    .product-body p { color:var(--muted); font-size:13px; line-height:1.6; min-height:42px; }
+    .price-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px; }
+    .price { font:800 21px Manrope,sans-serif; color:var(--green-dark); }
+    .pill { display:inline-block; padding:6px 10px; border-radius:99px; background:var(--mint); color:var(--green-dark); font-size:11px; font-weight:700; }
+    .panel { background:white; border:1px solid var(--line); border-radius:17px; padding:24px; }
+    .detail { display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:center; }
+    .detail img { width:100%; max-height:480px; object-fit:cover; border-radius:18px; background:#e9efe9; }
+    .form-wrap { max-width:650px; margin:0 auto; }
+    .form-wrap h1 { margin-top:0; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .field { margin-bottom:15px; }
+    .field label { display:block; font-size:13px; font-weight:700; margin-bottom:7px; }
+    input,textarea,select { width:100%; border:1px solid #d5dfd7; border-radius:9px; padding:12px; font:inherit; background:#fff; color:var(--ink); }
+    input:focus,textarea:focus { outline:2px solid #a4d9b8; border-color:var(--green); }
+    .errorlist { color:#b42318; font-size:13px; padding-left:20px; }
+    .messages { list-style:none; padding:0; margin:0 0 20px; }
+    .messages li { padding:12px 15px; border-radius:9px; margin-bottom:8px; background:#eaf6ef; color:#105c39; }
+    .messages li.error { background:#fff0ef; color:#b42318; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; background:white; }
+    th,td { text-align:left; padding:14px; border-bottom:1px solid var(--line); vertical-align:middle; }
+    th { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+    .cart-product { display:flex; align-items:center; gap:12px; min-width:200px; }
+    .cart-product img { width:65px; height:65px; object-fit:cover; border-radius:9px; }
+    .inline-form { display:inline-flex; align-items:center; gap:7px; }
+    .inline-form input { width:76px; padding:8px; }
+    .empty { text-align:center; padding:55px 20px; }
+    .empty .emoji { font-size:55px; }
+    .order-card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px; margin:15px 0; }
+    .footer { background:#102f22; color:#d5e6db; padding:28px 22px; text-align:center; font-size:13px; }
+    .footer strong { color:#fff; }
+    .auth-help { background:#f5faf6; padding:14px; border-radius:10px; font-size:13px; margin-top:15px; }
+    @media(max-width:800px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .hero { grid-template-columns:1fr; padding:30px; } .hero-art { display:none; } .nav-inner { flex-wrap:wrap; gap:12px; } .nav-links { gap:12px; flex-wrap:wrap; } }
+    @media(max-width:560px) { .grid,.detail,.form-grid { grid-template-columns:1fr; } .product-img { height:230px; } .container { padding:20px 14px 40px; } .hero { padding:25px 20px; } .nav-inner { padding:13px 15px; } .brand { font-size:20px; } .nav-links { font-size:12px; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="{% url 'home' %}">ShopEase<span style="color:#17211c">.</span></a>
+      <nav class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'cart' %}">Cart</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'my_orders' %}">My Orders</a>
+          <span class="muted">Hi, {{ user.username }}</span>
+          <form class="nav-form" method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Logout</button></form>
+        {% else %}
+          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'signup' %}" class="btn">Create account</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer"><strong>ShopEase.</strong> — A CodeAlpha Full Stack Development project · Built for learning</footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <div class="eyebrow">Everyday essentials · Thoughtfully selected</div>
+    <h1>Good finds.<br>Better everyday.</h1>
+    <p>Discover useful products for your study desk, daily routine and adventures. A simple, smooth shopping experience built with Django.</p>
+    <a class="btn light" href="#products">Explore products ↓</a>
+  </div>
+  <div class="hero-art" aria-hidden="true">🛍️</div>
+</section>
+<div class="section-head" id="products">
+  <div><span class="pill">OUR COLLECTION</span><h2>Popular products</h2><div class="muted">Choose something you love.</div></div>
+  <span class="muted">{{ products|length }} items</span>
+</div>
+{% if products %}
+<div class="grid">
+  {% for product in products %}
+  <article class="product-card">
+    <a href="{% url 'product_detail' product.id %}">
+      {% if product.image_url %}<img class="product-img" src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">{% else %}<div class="product-img"></div>{% endif %}
+    </a>
+    <div class="product-body">
+      <span class="pill">{% if product.stock %}In stock{% else %}Sold out{% endif %}</span>
+      <h3 style="margin-top:12px"><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h3>
+      <p>{{ product.description|truncatechars:90 }}</p>
+      <div class="price-row">
+        <span class="price">₹{{ product.price }}</span>
+        <form method="post" action="{% url 'cart_add' product.id %}">{% csrf_token %}<input type="hidden" name="next" value="cart"><button class="btn" type="submit" {% if not product.stock %}disabled{% endif %}>Add to cart +</button></form>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="panel empty"><div class="emoji">📦</div><h2>No products yet</h2><p class="muted">Run the seed_products command or add products in the admin page.</p></div>
+{% endif %}
+{% endblock %}

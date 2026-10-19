@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Create Account{% endblock %}
+{% block content %}
+<div class="form-wrap"><div class="panel">
+  <span class="pill">JOIN SH OPEASE</span><h1>Create account</h1><p class="muted">Register to place orders and keep track of them.</p>
+  <form method="post">{% csrf_token %}
+    {% for field in form %}
+      <div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="muted" style="font-size:12px;margin-top:6px">{{ field.help_text|safe }}</div>{% endif %}{% if field.errors %}<div class="errorlist">{{ field.errors }}</div>{% endif %}</div>
+    {% endfor %}
+    <button class="btn" style="width:100%" type="submit">Create account</button>
+  </form>
+  <div class="auth-help">Already registered? <a href="{% url 'login' %}" style="color:#16794b;font-weight:700">Log in</a></div>
+</div></div>
+{% endblock %}
